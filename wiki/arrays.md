@@ -113,9 +113,143 @@ This might be obvious, but traversing the array twice/thrice (as long as fewer t
 
 # Technique Practices and Solutions
 
+[Valid Anagram - LeetCode](https://leetcode.com/problems/valid-anagram/)
+
+```python
+ class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+  			'''
+        s = aaa
+        t = aaaa
+        { a: -1 }
+        '''
+        if len(s) != len(t):
+            return False
+
+        char_map = {}
+        
+        for char in s:
+            char_map[char] = char_map.get(char, 0) + 1
+
+        for char in t:
+            if char not in char_map or char_map[char] <= 0:
+                return False
+            char_map[char] -= 1
+
+        return True
+```
+
+
+
 ## Two Pointers
 
- 
+ [Two Sum II - Input Array Is Sorted- LeetCode](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+
+```python
+# Binary search: n log n 
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        '''
+        iterate thru list with index1
+        binary search the rest of the list for index2
+        '''
+        
+        n = len(numbers)    
+        if n == 2:
+            return [1,2]
+        # for each number in list
+        for i in range(n):
+            first = numbers[i]
+            left, right = i+1, n-1
+            while left<= right:
+                mid = (left + right)//2
+                currSum = numbers[mid] + first
+                if currSum == target:
+                    return [i+1, mid+1]
+                if currSum < target:
+                    left = mid+1
+                else:
+                    right = mid-1
+        return [0,0]
+```
+
+```python
+# two pointers O(n)
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        # two pointers ->  left, right(last index), and sum
+        # start with a very large window -> first, to last and shrink window as we go on
+        left, right, sum = 0, len(numbers) - 1, 0
+        # there is at least 1 solution but go until window is closed
+        while left < right:
+            sum = numbers[left] + numbers[right]
+            print(sum)
+            # If current sum is greater than target, move the right pointer to the left by 1, close the window
+            if sum > target:
+                right -= 1
+            # If current sum is less than target, move the left pointer to the right by 1, make window bigger
+            elif sum < target:
+                left += 1
+             # If current sum is equal to target return indices + 1 because 1-indexed
+            else:
+                return[left + 1, right + 1]	
+```
+
+[3Sum - LeetCode](https://leetcode.com/problems/3sum/description/)
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        
+        # List to store the resulting triplets
+        res = []
+        
+        # Sort the numbers list for the two-pointer technique and to skip duplicates
+        nums.sort()
+
+        # Iterate over each number in the list
+        for i, a in enumerate(nums):
+            
+            # If the current number is positive, break, because no triplet can sum up to 0 with all positive numbers
+            if a > 0:
+                break
+
+            # Skip duplicates to prevent duplicate triplets
+            if i > 0 and a == nums[i - 1]:
+                continue
+
+            # Initialize two pointers: one just after the current number (l) and another at the end of the list (r)
+            l, r = i + 1, len(nums) - 1
+            
+            # While the left pointer is to the left of the right pointer
+            while l < r:
+                # Calculate the sum of the current triplet
+                threeSum = a + nums[l] + nums[r]
+
+                # If the sum is greater than 0, move the right pointer leftwards to reduce the sum
+                if threeSum > 0:
+                    r -= 1
+                # If the sum is less than 0, move the left pointer rightwards to increase the sum
+                elif threeSum < 0:
+                    l += 1
+                # If a valid triplet is found
+                else:
+                    # Add the triplet to the results list
+                    res.append([a, nums[l], nums[r]])
+                    # Move both pointers to avoid duplicates
+                    l += 1
+                    r -= 1
+                    # Skip the same numbers (duplicates) for the left pointer to avoid duplicate triplets
+                    while nums[l] == nums[l - 1] and l < r:
+                        l += 1
+                        
+        # Return the list of unique triplets
+        return res
+
+```
+
+
 
 ## Sliding Window
 
