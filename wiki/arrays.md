@@ -12,7 +12,7 @@ Arrays and hash tables are some of the most fundamental data structures used in 
 
 Example: `int array1[5] = [0,1,2,3,4]`  initializes an array of size 5 with the values `[0,1,2,3,4]` with respective indices of `[0,1,2,3,4]`.
 
-In Python, **dynamic arrays **are used which grow and shrink according to the dataset.
+In Python, **dynamic arrays** are used which grow and shrink according to the dataset.
 
 **Advantages**
 
